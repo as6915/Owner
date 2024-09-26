@@ -7,8 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://threejs.org/examples/jsm/loaders/FontLoader.js"></script>
-    <script src="https://threejs.org/examples/jsm/geometries/TextGeometry.js"></script>
+    <script src="https://threejs.org/examples/jsm/loaders/GLTFLoader.js"></script>
 </head>
 <body>
     <!-- Header with animated effects -->
@@ -24,7 +23,7 @@
                 <li><a href="#">Contact Us</a></li>
             </ul>
         </nav>
-        <a href="https://wa.me/YOURNUMBER" class="cta">Contact Now</a>
+        <a href="https://wa.me/201028085788" class="cta">Contact Now</a>
     </header>
 
     <!-- Animated hero section using GSAP -->
@@ -34,8 +33,8 @@
         <a href="#services" class="cta">Explore My Services</a>
     </section>
 
-    <!-- Placeholder for the 3D text -->
-    <div id="three-container"></div>
+    <!-- Placeholder for the 3D scorpion -->
+    <div id="three-container" style="height: 400px;"></div>
 
     <!-- Interactive services section -->
     <section id="services" class="services">
@@ -71,42 +70,39 @@
         // GSAP animations
         gsap.from('.animate-text', { opacity: 0, y: 50, duration: 1, stagger: 0.3 });
 
-        // Three.js setup for 3D text
+        // Three.js setup for 3D scorpion
         const scene = new THREE.Scene();
         const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         document.getElementById('three-container').appendChild(renderer.domElement);
 
-        // Load font and create 3D text
-        const loader = new THREE.FontLoader();
-        loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function (font) {
-            const textGeometry = new THREE.TextGeometry('Al Akrab', {
-                font: font,
-                size: 1,
-                height: 0.2,
-                curveSegments: 12,
-                bevelEnabled: true,
-                bevelThickness: 0.03,
-                bevelSize: 0.02,
-                bevelOffset: 0,
-                bevelSegments: 5
-            });
+        // Add ambient light
+        const ambientLight = new THREE.AmbientLight(0x404040); // soft white light
+        scene.add(ambientLight);
 
-            const textMaterial = new THREE.MeshBasicMaterial({ color: 0xfca311 });
-            const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-            scene.add(textMesh);
+        // Add a directional light
+        const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+        directionalLight.position.set(5, 5, 5).normalize();
+        scene.add(directionalLight);
 
-            textMesh.position.set(-3, 0, 0);  // Adjust position if needed
+        // Load the 3D scorpion model
+        const loader = new THREE.GLTFLoader();
+        loader.load('https://example.com/path/to/scorpion_model.glb', (gltf) => {
+            const scorpion = gltf.scene;
+            scene.add(scorpion);
+            scorpion.position.set(0, -1, 0); // Adjust position if needed
 
             camera.position.z = 5;
 
             function animate() {
                 requestAnimationFrame(animate);
-                textMesh.rotation.y += 0.01;  // Rotation animation
+                scorpion.rotation.y += 0.01; // Rotation animation
                 renderer.render(scene, camera);
             }
             animate();
+        }, undefined, function (error) {
+            console.error(error);
         });
     </script>
 </body>
