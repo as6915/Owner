@@ -3,111 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abdelrahman Reda | Al Akrab</title>
+    <title>Al Akrab - Home</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://threejs.org/examples/jsm/loaders/FontLoader.js"></script>
-    <script src="https://threejs.org/examples/jsm/geometries/TextGeometry.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/barba.js/2.9.7/barba.min.js"></script>
 </head>
 <body>
-    <!-- Header with animated effects -->
     <header class="main-header">
         <div class="logo">
             <h1>Al Akrab</h1>
         </div>
         <nav>
             <ul class="nav-links">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Services</a></li>
-                <li><a href="#">Portfolio</a></li>
-                <li><a href="#">Contact Us</a></li>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="portfolio.html">Portfolio</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
             </ul>
         </nav>
-        <a href="https://wa.me/YOURNUMBER" class="cta">Contact Now</a>
+        <a href="https://wa.me/201028085788" class="cta">Contact Now</a>
     </header>
 
-    <!-- Animated hero section using GSAP -->
-    <section class="hero">
-        <h2 class="animate-text">Welcome, I'm Abdelrahman Reda</h2>
-        <p class="animate-text">A professional software and web developer</p>
-        <a href="#services" class="cta">Explore My Services</a>
-    </section>
+    <div id="content">
+        <h2>Welcome to Al Akrab</h2>
+        <p>Your gateway to advanced web solutions and stunning designs.</p>
+    </div>
 
-    <!-- Placeholder for the 3D text -->
-    <div id="three-container"></div>
-
-    <!-- Interactive services section -->
-    <section id="services" class="services">
-        <h2>My Services</h2>
-        <div class="service-cards">
-            <div class="service-card">
-                <h3>Web Development</h3>
-                <p>I design and develop professional websites that meet your business needs.</p>
-            </div>
-            <div class="service-card">
-                <h3>Bot Programming</h3>
-                <p>Interactive WhatsApp bots, easy to use and deploy.</p>
-            </div>
-            <div class="service-card">
-                <h3>Full Stack Development</h3>
-                <p>Comprehensive solutions from frontend to backend.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- Footer -->
     <footer class="main-footer">
         <p>© 2024 Abdelrahman Reda - Al Akrab</p>
-        <ul class="social-links">
-            <li><a href="#">YouTube</a></li>
-            <li><a href="#">LinkedIn</a></li>
-            <li><a href="#">Instagram</a></li>
-        </ul>
     </footer>
 
-    <!-- GSAP animation script -->
-    <script>
-        // GSAP animations
-        gsap.from('.animate-text', { opacity: 0, y: 50, duration: 1, stagger: 0.3 });
-
-        // Three.js setup for 3D text
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.getElementById('three-container').appendChild(renderer.domElement);
-
-        // Load font and create 3D text
-        const loader = new THREE.FontLoader();
-        loader.load('https://threejs.org/examples/fonts/helvetiker_regular.typeface.json', function (font) {
-            const textGeometry = new THREE.TextGeometry('Al Akrab', {
-                font: font,
-                size: 1,
-                height: 0.2,
-                curveSegments: 12,
-                bevelEnabled: true,
-                bevelThickness: 0.03,
-                bevelSize: 0.02,
-                bevelOffset: 0,
-                bevelSegments: 5
-            });
-
-            const textMaterial = new THREE.MeshBasicMaterial({ color: 0xfca311 });
-            const textMesh = new THREE.Mesh(textGeometry, textMaterial);
-            scene.add(textMesh);
-
-            textMesh.position.set(-3, 0, 0);  // Adjust position if needed
-
-            camera.position.z = 5;
-
-            function animate() {
-                requestAnimationFrame(animate);
-                textMesh.rotation.y += 0.01;  // Rotation animation
-                renderer.render(scene, camera);
-            }
-            animate();
-        });
-    </script>
+    <script src="main.js"></script>
 </body>
 </html>
