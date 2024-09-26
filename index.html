@@ -3,37 +3,98 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Al Akrab - Home</title>
+    <title>Al Akrab | Scorpion Animation</title>
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.9.1/gsap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/barba.js/2.9.7/barba.min.js"></script>
 </head>
 <body>
+    <!-- Header and other sections -->
     <header class="main-header">
         <div class="logo">
             <h1>Al Akrab</h1>
         </div>
         <nav>
             <ul class="nav-links">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="services.html">Services</a></li>
-                <li><a href="portfolio.html">Portfolio</a></li>
-                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Services</a></li>
+                <li><a href="#">Portfolio</a></li>
+                <li><a href="#">Contact Us</a></li>
             </ul>
         </nav>
-        <a href="https://wa.me/201028085788" class="cta">Contact Now</a>
+        <a href="https://wa.me/YOURNUMBER" class="cta">Contact Now</a>
     </header>
 
-    <div id="content">
-        <h2>Welcome to Al Akrab</h2>
-        <p>Your gateway to advanced web solutions and stunning designs.</p>
-    </div>
+    <!-- Placeholder for the 3D scorpion -->
+    <div id="three-container"></div>
 
-    <footer class="main-footer">
-        <p>© 2024 Abdelrahman Reda - Al Akrab</p>
-    </footer>
+    <!-- Scripts for Three.js and scorpion -->
+    <script>
+        // Three.js scene setup
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.getElementById('three-container').appendChild(renderer.domElement);
 
-    <script src="main.js"></script>
+        // Create the scorpion body
+        const bodyGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+        const bodyMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+        const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+        body.position.set(0, 0, 0);
+        scene.add(body);
+
+        // Create the tail of the scorpion
+        const tailGeometry = new THREE.CylinderGeometry(0.1, 0.2, 1, 32);
+        const tailMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+        const tail = new THREE.Mesh(tailGeometry, tailMaterial);
+        tail.position.set(0, 0.75, -0.5);
+        tail.rotation.x = Math.PI / 4;
+        scene.add(tail);
+
+        // Create the legs
+        const legGeometry = new THREE.CylinderGeometry(0.05, 0.05, 0.75, 32);
+        const legMaterial = new THREE.MeshBasicMaterial({ color: 0x000000 });
+        const legs = [];
+        for (let i = 0; i < 6; i++) {
+            const leg = new THREE.Mesh(legGeometry, legMaterial);
+            leg.position.set(i % 2 === 0 ? -0.5 : 0.5, -0.25, i < 3 ? 0.25 : -0.25);
+            leg.rotation.z = Math.PI / 4;
+            legs.push(leg);
+            scene.add(leg);
+        }
+
+        // Set camera position
+        camera.position.z = 5;
+
+        // Function to animate the scorpion
+        function animate() {
+            requestAnimationFrame(animate);
+            body.rotation.y += 0.01;
+            tail.rotation.x += 0.02;
+            legs.forEach(leg => leg.rotation.y += 0.02);
+            renderer.render(scene, camera);
+        }
+        animate();
+
+        // Adding mouse move and device orientation sensitivity
+        document.addEventListener('mousemove', onMouseMove);
+        window.addEventListener('deviceorientation', onDeviceMove);
+
+        // Handle mouse movement for 3D scorpion
+        function onMouseMove(event) {
+            const mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            const mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+            body.rotation.x = mouseY * Math.PI / 4;
+            body.rotation.y = mouseX * Math.PI / 4;
+        }
+
+        // Handle device orientation for mobile
+        function onDeviceMove(event) {
+            const alpha = event.alpha ? event.alpha * (Math.PI / 180) : 0;
+            const beta = event.beta ? event.beta * (Math.PI / 180) : 0;
+            body.rotation.x = beta * Math.PI / 4;
+            body.rotation.y = alpha * Math.PI / 4;
+        }
+    </script>
 </body>
 </html>
